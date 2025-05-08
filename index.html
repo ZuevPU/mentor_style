@@ -1,214 +1,124 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mentor Profile</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Профиль участника</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* --- minimalist adaptive styles --- */
-    body{font-family:'Inter',sans-serif;margin:0;background:#f7f9fc;color:#2c3e50;display:flex;justify-content:center;align-items:center;min-height:100vh}
-    .container{background:#fff;padding:30px;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,0.08);width:90%;max-width:600px;box-sizing:border-box}
-    h1{text-align:center;margin:0 0 24px;font-weight:600;color:#4c566a}
-    label{display:block;margin-bottom:6px;font-size:14px;color:#34495e;font-weight:500}
-    input,select{width:100%;padding:10px;border:1px solid #dcdfe4;border-radius:6px;font-size:15px;margin-bottom:18px;box-sizing:border-box}
-    input:focus,select:focus{outline:none;border-color:#4caf50}
-    button{display:block;width:100%;padding:12px 0;font-size:16px;border:none;border-radius:6px;background:#4caf50;color:#fff;cursor:pointer;transition:background .25s}
-    button:hover{background:#45a049}
-    #avatar-preview{width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:18px;border:2px solid #dcdfe4}
-    .catalog{display:flex;flex-wrap:wrap;gap:16px;justify-content:center}
-    .user-card{background:#ecf0f1;padding:14px;border-radius:8px;width:240px;text-align:center;display:flex;flex-direction:column;align-items:center}
-    .user-avatar{width:80px;height:80px;border-radius:50%;object-fit:cover;border:1px solid #95a5a6;margin-bottom:8px}
-    .contact-button{margin-top:6px;padding:8px 14px;border:none;border-radius:5px;background:#3498db;color:#fff;font-size:14px;cursor:pointer}
+    body { font-family: 'Inter', sans-serif; background: #f7f9fc; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+    .container { background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); width: 90%; max-width: 600px; }
+    h1, h2 { text-align: center; color: #4c566a; }
+    label { font-size: 14px; font-weight: 500; color: #34495e; margin-top: 10px; display: block; }
+    input, select { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 15px; }
+    button { background: #4CAF50; color: #fff; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-size: 16px; }
+    button:hover { background: #45a049; }
+    .user-card { background: #ecf0f1; padding: 15px; border-radius: 8px; margin: 10px 0; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .user-avatar { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 1px solid #95a5a6; margin-bottom: 8px; }
+    .user-info h3 { margin: 8px 0 4px; font-size: 18px; }
+    .user-info .small-text { font-size: 13px; color: #7f8c8d; }
+    .contact-button { background: #3498db; color: #fff; border: none; padding: 8px 16px; border-radius: 5px; margin-top: 6px; cursor: pointer; font-size: 14px; }
+    #city-filter { margin-bottom: 15px; width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Профиль участника</h1>
+<div class="container">
+  <h1>Профиль участника</h1>
+  <form id="profile-form">
+    <label>Фото профиля</label>
+    <img id="avatar-preview" src="https://via.placeholder.com/100?text=Фото" style="width:100px;height:100px;border-radius:50%;margin-bottom:10px;">
+    <input type="url" id="photo_url" placeholder="URL фото">
+    <label>ФИО</label>
+    <input type="text" id="name" required>
+    <label>Город</label>
+    <input type="text" id="city">
+    <label>Место работы</label>
+    <input type="text" id="job">
+    <label>Должность</label>
+    <input type="text" id="position">
+    <label>Хобби</label>
+    <input type="text" id="hobby">
+    <label>Ссылка на профиль</label>
+    <input type="url" id="profile_bp_url">
+    <label>Роль</label>
+    <select id="role">
+      <option value="наставляемый">Наставляемый</option>
+      <option value="наставник">Наставник</option>
+    </select>
+    <button type="submit">Сохранить профиль</button>
+  </form>
 
-    <!-- ===== Profile form ===== -->
-    <form id="profile-form">
-      <label>Фото профиля</label>
-      <img id="avatar-preview" src="https://via.placeholder.com/100?text=Фото" alt="avatar" />
-      <input type="url" id="photo_url" placeholder="URL фотографии" pattern="https?://.+" />
+  <section id="directory-section" style="display:none">
+    <h2 id="directory-title">Каталог</h2>
+    <select id="city-filter"><option value="">Все города</option></select>
+    <div id="user-list"></div>
+  </section>
+</div>
+<script>
+  const tg = window.Telegram.WebApp;
+  tg.ready();
+  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyGSg_NRcZP7KgcB5u3rNM4n63wGFrzeBrcMpK6yBQWXo6nIEjva0sSo4BlUinfLmb0/exec';
 
-      <label>ФИО</label>
-      <input type="text" id="name" required />
+  const currentUser = { telegram_id: tg.initDataUnsafe?.user?.id, username: tg.initDataUnsafe?.user?.username || null };
+  document.getElementById('photo_url').addEventListener('input', e => {
+    document.getElementById('avatar-preview').src = e.target.value || 'https://via.placeholder.com/100?text=Фото';
+  });
 
-      <label>Город</label>
-      <input type="text" id="city" />
-
-      <label>Место работы</label>
-      <input type="text" id="job" />
-
-      <label>Должность</label>
-      <input type="text" id="position" />
-
-      <label>Хобби</label>
-      <input type="text" id="hobby" />
-
-      <label>Ссылка на профиль (BeProfile)</label>
-      <input type="url" id="profile_bp_url" placeholder="https://..." pattern="https?://.+" />
-
-      <label>Роль</label>
-      <select id="role">
-        <option value="наставляемый">Наставляемый</option>
-        <option value="наставник">Наставник</option>
-      </select>
-
-      <button type="submit">Сохранить профиль</button>
-    </form>
-
-    <!-- ===== Directory ===== -->
-    <section id="directory-section" style="display:none">
-      <h2 id="directory-title">Каталог</h2>
-      <div id="user-list" class="catalog"></div>
-      <p id="empty-directory-message" style="text-align:center;color:#95a5a6">В каталоге пока нет пользователей</p>
-    </section>
-  </div>
-
-  <script>
-    /* ---------------- CONFIG ---------------- */
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyGSg_NRcZP7KgcB5u3rNM4n63wGFrzeBrcMpK6yBQWXo6nIEjva0sSo4BlUinfLmb0/exec';
-
-    /* ------------- Telegram init ------------ */
-    const tg = window.Telegram.WebApp;
-    tg.ready();
-    tg.expand();
-
-    const currentUser = {
-      telegram_id: tg.initDataUnsafe?.user?.id ?? null,
-      username   : tg.initDataUnsafe?.user?.username ?? null,
-      role        : 'наставляемый',
-      name        : '',
-      city        : '',
-      job         : '',
-      position    : '',
-      hobby       : '',
-      profile_bp_url:'',
-      photo_url   : tg.initDataUnsafe?.user?.photo_url ?? 'https://via.placeholder.com/100?text=Фото'
+  document.getElementById('profile-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const profile = {
+      telegram_id: currentUser.telegram_id,
+      username: currentUser.username,
+      photo_url: document.getElementById('photo_url').value,
+      name: document.getElementById('name').value,
+      city: document.getElementById('city').value,
+      job: document.getElementById('job').value,
+      position: document.getElementById('position').value,
+      hobby: document.getElementById('hobby').value,
+      profile_bp_url: document.getElementById('profile_bp_url').value,
+      role: document.getElementById('role').value
     };
-
-    /* --------------- DOM refs --------------- */
-    const avatarPreview       = document.getElementById('avatar-preview');
-    const photoUrlInput       = document.getElementById('photo_url');
-    const nameInput           = document.getElementById('name');
-    const cityInput           = document.getElementById('city');
-    const jobInput            = document.getElementById('job');
-    const positionInput       = document.getElementById('position');
-    const hobbyInput          = document.getElementById('hobby');
-    const bpUrlInput          = document.getElementById('profile_bp_url');
-    const roleSelect          = document.getElementById('role');
-    const directorySection    = document.getElementById('directory-section');
-    const directoryTitle      = document.getElementById('directory-title');
-    const userList            = document.getElementById('user-list');
-    const emptyDirMessage     = document.getElementById('empty-directory-message');
-
-    /* ---------- populate defaults ---------- */
-    if(currentUser.photo_url){avatarPreview.src=currentUser.photo_url;photoUrlInput.value=currentUser.photo_url}
-    if(tg.initDataUnsafe?.user){nameInput.value=`${tg.initDataUnsafe.user.first_name||''} ${tg.initDataUnsafe.user.last_name||''}`.trim()}
-
-    /* ---------- helpers ---------- */
-    function showDirectoryTitle(){
-      directoryTitle.textContent = currentUser.role==='наставник' ? 'Каталог Наставляемых' : 'Каталог Наставников';
-    }
-
-    /* --------- Save (simple POST) --------- */
-    async function saveUserProfileData(profile){
-      await fetch(WEB_APP_URL,{
-        method:'POST',
-        headers:{'Content-Type':'text/plain;charset=utf-8'},
-        mode:'no-cors',
-        body:JSON.stringify(profile)
-      });
-    }
-
-    /* --------- Load profile (JSON GET) --------- */
-    async function loadProfile(){
-      if(!currentUser.telegram_id) return;
-      try{
-        const res = await fetch(`${WEB_APP_URL}?telegram_id=${currentUser.telegram_id}`);
-        if(!res.ok) return;
-        const data = await res.json();
-        if(data.error) return;
-        // fill form
-        avatarPreview.src = photoUrlInput.value = data.photo_url || avatarPreview.src;
-        nameInput.value   = data.name   || '';
-        cityInput.value   = data.city   || '';
-        jobInput.value    = data.job    || '';
-        positionInput.value = data.position || '';
-        hobbyInput.value  = data.hobby  || '';
-        bpUrlInput.value  = data.profile_bp_url || '';
-        roleSelect.value  = data.role   || 'наставляемый';
-        Object.assign(currentUser,data);
-      }catch(e){console.log('loadProfile fail',e)}
-    }
-
-    /* --------- Load catalog --------- */
-    async function loadCatalog(){
-      try{
-        const res = await fetch(WEB_APP_URL);
-        if(!res.ok) return;
-        const {users=[]} = await res.json();
-        const needed = currentUser.role==='наставник' ? 'наставляемый' : 'наставник';
-        const list = users.filter(u=>u.role===needed && String(u.telegram_id)!==String(currentUser.telegram_id));
-        userList.innerHTML='';
-        if(!list.length){emptyDirMessage.style.display='block';return;}
-        emptyDirMessage.style.display='none';
-        list.forEach(u=>{
-          const card=document.createElement('div');card.className='user-card';
-          card.innerHTML=`<img class="user-avatar" src="${u.photo_url||'https://via.placeholder.com/80'}"/>\n          <div><strong>${u.name||'Без имени'}</strong>${u.city?` (${u.city})`:''}<br>${u.hobby||''}</div>`+
-          (u.username?`<button class="contact-button" onclick="window.Telegram.WebApp.openTelegramLink('https://t.me/${u.username}')">Связаться</button>`:'');
-          userList.appendChild(card);
-        });
-        directorySection.style.display='block';
-      }catch(e){console.log('catalog error',e)}
-    }
-
-    /* ---------- Event listeners ---------- */
-    roleSelect.addEventListener('change',()=>{
-      currentUser.role = roleSelect.value;
-      showDirectoryTitle();
-      loadCatalog();
+    await fetch(WEB_APP_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      mode: 'no-cors',
+      body: JSON.stringify(profile)
     });
+    alert('Профиль сохранён');
+    loadCatalog();
+  });
 
-    photoUrlInput.addEventListener('input',()=>{
-      avatarPreview.src = photoUrlInput.value || 'https://via.placeholder.com/100?text=Фото';
-    });
+  async function loadCatalog() {
+    const res = await fetch(WEB_APP_URL);
+    const data = await res.json();
+    const users = data.users || [];
+    const neededRole = document.getElementById('role').value === 'наставник' ? 'наставляемый' : 'наставник';
+    const cities = new Set();
+    users.forEach(u => { if (u.city) cities.add(u.city); });
+    const filter = document.getElementById('city-filter');
+    filter.innerHTML = '<option value="">Все города</option>' + [...cities].map(c => `<option value="${c}">${c}</option>`).join('');
 
-    document.getElementById('profile-form').addEventListener('submit',async e=>{
-      e.preventDefault();
-      if(!currentUser.telegram_id){tg.showAlert('Нет telegram_id');return}
-      const profile={
-        telegram_id:currentUser.telegram_id,
-        username   :currentUser.username,
-        role       :roleSelect.value,
-        name       :nameInput.value.trim(),
-        city       :cityInput.value.trim(),
-        job        :jobInput.value.trim(),
-        position   :positionInput.value.trim(),
-        hobby      :hobbyInput.value.trim(),
-        profile_bp_url:bpUrlInput.value.trim(),
-        photo_url  :photoUrlInput.value.trim()||'https://via.placeholder.com/100?text=Фото'
-      };
-      tg.MainButton.showProgress();
-      try{
-        await saveUserProfileData(profile);
-        Object.assign(currentUser,profile);
-        tg.showAlert('Профиль сохранён');
-        showDirectoryTitle();
-        loadCatalog();
-      }catch(err){console.error(err);tg.showAlert('Ошибка сохранения');}
-      tg.MainButton.hideProgress();
-    });
+    function render(city = '') {
+      const list = document.getElementById('user-list');
+      const filtered = users.filter(u => u.role === neededRole && (!city || u.city === city));
+      list.innerHTML = filtered.map(u => `
+        <div class="user-card">
+          <img src="${u.photo_url || 'https://via.placeholder.com/80'}" class="user-avatar" />
+          <div class="user-info">
+            <h3>${u.name}</h3>
+            <p class="small-text">${u.city || ''}${u.job ? ', ' + u.job : ''}${u.position ? ', ' + u.position : ''}</p>
+          </div>
+          ${u.username ? `<button class="contact-button" onclick="Telegram.WebApp.openTelegramLink('https://t.me/${u.username}')">Связаться</button>` : ''}
+        </div>`).join('');
+      document.getElementById('directory-section').style.display = 'block';
+    }
 
-    /* ---------- Init ---------- */
-    showDirectoryTitle();
-document.addEventListener('DOMContentLoaded', async function () {
-  await loadProfile();
-  await loadCatalog();
-});
-  </script>
+    filter.onchange = () => render(filter.value);
+    render();
+  }
+
+  loadCatalog();
+</script>
 </body>
 </html>

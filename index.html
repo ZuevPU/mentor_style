@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Платформа Наставничества</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div class="container">
+        <section id="profile-section" class="app-section">
+            <h2 class="section-title">Мой Профиль</h2>
+            <form id="profile-form">
+                <div class="form-group avatar-container">
+                    <img id="avatar-preview" src="https://placehold.co/100x100/E0E0E0/B0B0B0?text=Фото" alt="Аватар" class="avatar-image">
+                    <label for="photo_url" class="form-label">Ссылка на фото (URL):</label>
+                    <input type="url" id="photo_url" name="photo_url" class="form-input" placeholder="https://example.com/avatar.jpg">
+                    </div>
+
+                <div class="form-group">
+                    <label for="name" class="form-label">ФИО:</label>
+                    <input type="text" id="name" name="name" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="city" class="form-label">Город проживания:</label>
+                    <input type="text" id="city" name="city" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="hobby" class="form-label">Хобби:</label>
+                    <input type="text" id="hobby" name="hobby" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="job" class="form-label">Место работы:</label>
+                    <input type="text" id="job" name="job" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="position" class="form-label">Должность:</label>
+                    <input type="text" id="position" name="position" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="profile_bp_url" class="form-label">Ссылка на профиль в БП (ID или URL):</label>
+                    <input type="text" id="profile_bp_url" name="profile_bp_url" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="role" class="form-label">Моя роль:</label>
+                    <select id="role" name="role" class="form-select">
+                        <option value="наставляемый">Наставляемый</option>
+                        <option value="наставник">Наставник</option>
+                    </select>
+                </div>
+                </form>
+        </section>
+
+        <section id="directory-section" class="app-section">
+            <h2 id="directory-title" class="section-title">Каталог</h2>
+            <div id="user-list" class="user-list-container">
+                </div>
+            <p id="empty-directory-message" class="empty-message" style="display: none;">В каталоге пока нет пользователей.</p>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
